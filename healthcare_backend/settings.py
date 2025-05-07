@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os 
 from datetime import timedelta
-
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,9 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-%=zr#$!%io#xq&4d=ao&2zda@rtp)n%(tqm!fra=7^9c_^j=#5'
+# SECRET_KEY = os.getenv("django-insecure-%=zr#$!%io#xq&4d=ao&2zda@rtp)n%(tqm!fra=7^9c_^j=#5")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -90,11 +93,16 @@ WSGI_APPLICATION = 'healthcare_backend.wsgi.application'
 DATABASES = {
      "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "healthcare_db",
-        "USER": "vasu1",
-        "PASSWORD": "hello123456",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        # "NAME": "healthcare_db",
+        "NAME": os.getenv("DB_NAME"),
+        # "USER": "vasu1",
+        "USER": os.getenv("DB_USER"),
+        # "PASSWORD": "hello123456",
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        # "HOST": "127.0.0.1",
+        # "PORT": "5432",
+        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
 
@@ -165,6 +173,7 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': False,
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
+    # 'SIGNING_KEY': os.getenv("SECRET_KEY"),
     'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': ('Bearer',),
     'USER_ID_FIELD': 'id',
